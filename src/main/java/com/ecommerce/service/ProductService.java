@@ -5,6 +5,7 @@ import com.ecommerce.entity.Product;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +16,29 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
+    public List<ProductResponse> getAllProducts(Double priceMin, Double priceMax, String category, String brand, Double rating, Boolean inStock) {
+        Specification<Product> spec = Specification.where(null);
+
+        if (priceMin != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), priceMin));
+        }
+        if (priceMax != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), priceMax));
+        }
+        if (category != null && !category.isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category));
+        }
+        if (brand != null && !brand.isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("brand"), brand));
+        }
+        if (rating != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("ratingRate"), rating));
+        }
+        if (inStock != null && inStock) {
+            spec = spec.and((root, query, cb) -> cb.greaterThan(root.get("stock"), 0));
+        }
+
+        return productRepository.findAll(spec).stream()
                 .map(ProductResponse::fromEntity)
                 .collect(Collectors.toList());
     }

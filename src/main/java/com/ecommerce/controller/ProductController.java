@@ -15,8 +15,14 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<ProductResponse>> getAllProducts(
+            @RequestParam(required = false) Double priceMin,
+            @RequestParam(required = false) Double priceMax,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) Double rating,
+            @RequestParam(required = false) Boolean inStock) {
+        return ResponseEntity.ok(productService.getAllProducts(priceMin, priceMax, category, brand, rating, inStock));
     }
 
     @GetMapping("/{id}")
