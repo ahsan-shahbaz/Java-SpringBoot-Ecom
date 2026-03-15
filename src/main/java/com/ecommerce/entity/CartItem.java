@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "cart_items", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user_id", "product_id"})
+    @UniqueConstraint(columnNames = {"user_id", "product_id", "variant"})
 })
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -26,4 +26,6 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    private String variant;
 }

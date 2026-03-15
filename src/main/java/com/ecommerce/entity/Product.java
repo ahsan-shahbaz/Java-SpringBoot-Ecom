@@ -61,4 +61,10 @@ public class Product {
     @Column(name = "tag")
     @Builder.Default
     private List<String> tags = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_variants", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "variant")
+    @Builder.Default
+    private List<String> variants = new ArrayList<>();
 }

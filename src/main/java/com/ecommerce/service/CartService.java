@@ -33,7 +33,8 @@ public class CartService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + request.getProductId()));
 
-        Optional<CartItem> existingItem = cartItemRepository.findByUserAndProductId(user, request.getProductId());
+        Optional<CartItem> existingItem = cartItemRepository.findByUserAndProductIdAndVariant(
+                user, request.getProductId(), request.getVariant());
 
         if (existingItem.isPresent()) {
             CartItem item = existingItem.get();
@@ -44,6 +45,7 @@ public class CartService {
                     .user(user)
                     .product(product)
                     .quantity(request.getQuantity())
+                    .variant(request.getVariant())
                     .build();
             cartItemRepository.save(newItem);
         }
@@ -52,8 +54,8 @@ public class CartService {
     }
 
     @Transactional
-    public CartResponse updateQuantity(User user, Long productId, Integer quantity) {
-        CartItem cartItem = cartItemRepository.findByUserAndProductId(user, productId)
+    public CartResponse updateQuantity(User user, Long productId, String variant, Integer quantity) {
+        CartItem cartItem = cartItemRepository.findByUserAndProductIdAndVariant(user, productId, variant)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
 
         if (quantity <= 0) {
@@ -67,8 +69,8 @@ public class CartService {
     }
 
     @Transactional
-    public CartResponse removeFromCart(User user, Long productId) {
-        cartItemRepository.deleteByUserAndProductId(user, productId);
+    public CartResponse removeFromCart(User user, Long productId, String variant) {
+        cartItemRepository.deleteByUserAndProductIdAndVariant(user, productId, variant);
         return getCart(user);
     }
 
@@ -83,6 +85,7 @@ public class CartService {
                 .map(ci -> CartResponse.CartItemDto.builder()
                         .product(ProductResponse.fromEntity(ci.getProduct()))
                         .quantity(ci.getQuantity())
+                        .variant(ci.getVariant())
                         .build())
                 .collect(Collectors.toList());
 

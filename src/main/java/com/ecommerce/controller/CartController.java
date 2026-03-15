@@ -37,17 +37,19 @@ public class CartController {
     public ResponseEntity<CartResponse> updateQuantity(
             Authentication authentication,
             @PathVariable Long productId,
+            @RequestParam(required = false) String variant,
             @RequestParam Integer quantity) {
         User user = getUser(authentication);
-        return ResponseEntity.ok(cartService.updateQuantity(user, productId, quantity));
+        return ResponseEntity.ok(cartService.updateQuantity(user, productId, variant, quantity));
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<CartResponse> removeFromCart(
             Authentication authentication,
-            @PathVariable Long productId) {
+            @PathVariable Long productId,
+            @RequestParam(required = false) String variant) {
         User user = getUser(authentication);
-        return ResponseEntity.ok(cartService.removeFromCart(user, productId));
+        return ResponseEntity.ok(cartService.removeFromCart(user, productId, variant));
     }
 
     @DeleteMapping

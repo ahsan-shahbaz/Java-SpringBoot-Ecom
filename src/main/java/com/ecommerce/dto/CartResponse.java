@@ -21,5 +21,6 @@ public class CartResponse {
     public static class CartItemDto {
         private ProductResponse product;
         private Integer quantity;
+        private String variant;
     }
 }

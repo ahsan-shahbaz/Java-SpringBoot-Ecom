@@ -27,4 +27,6 @@ public class OrderItem {
 
     @Column(nullable = false)
     private Double price;
+
+    private String variant;
 }

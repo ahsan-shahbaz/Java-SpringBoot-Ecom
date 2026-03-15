@@ -26,6 +26,7 @@ public class ProductResponse {
     private Integer stock;
     private Rating rating;
     private List<String> tags;
+    private List<String> variants;
 
     @Getter @Setter
     @NoArgsConstructor @AllArgsConstructor
@@ -54,6 +55,7 @@ public class ProductResponse {
                         .count(product.getRatingCount())
                         .build())
                 .tags(product.getTags())
+                .variants(product.getVariants())
                 .build();
     }
 }

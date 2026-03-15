@@ -28,6 +28,7 @@ public class OrderResponse {
         private ProductResponse product;
         private Integer quantity;
         private Double price;
+        private String variant;
     }
 
     public static OrderResponse fromEntity(Order order) {
@@ -36,6 +37,7 @@ public class OrderResponse {
                         .product(ProductResponse.fromEntity(item.getProduct()))
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
+                        .variant(item.getVariant())
                         .build())
                 .collect(Collectors.toList());
 

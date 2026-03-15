@@ -48,6 +48,7 @@ public class OrderService {
                     .product(cartItem.getProduct())
                     .quantity(cartItem.getQuantity())
                     .price(cartItem.getProduct().getPrice())
+                    .variant(cartItem.getVariant())
                     .build();
             order.addItem(orderItem);
         }
