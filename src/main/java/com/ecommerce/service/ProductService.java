@@ -6,6 +6,7 @@ import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<ProductResponse> getAllProducts(Double priceMin, Double priceMax, String category, String brand, Double rating, Boolean inStock) {
+    public List<ProductResponse> getAllProducts(Double priceMin, Double priceMax, String category, String brand, Double rating, Boolean inStock, String sortBy) {
         Specification<Product> spec = Specification.where(null);
 
         if (priceMin != null) {
@@ -38,7 +39,28 @@ public class ProductService {
             spec = spec.and((root, query, cb) -> cb.greaterThan(root.get("stock"), 0));
         }
 
-        return productRepository.findAll(spec).stream()
+        Sort sort = Sort.by(Sort.Direction.DESC, "id"); // default
+        if (sortBy != null) {
+            switch (sortBy) {
+                case "price_asc":
+                    sort = Sort.by(Sort.Direction.ASC, "price");
+                    break;
+                case "price_desc":
+                    sort = Sort.by(Sort.Direction.DESC, "price");
+                    break;
+                case "popularity":
+                    sort = Sort.by(Sort.Direction.DESC, "ratingCount");
+                    break;
+                case "rating":
+                    sort = Sort.by(Sort.Direction.DESC, "ratingRate");
+                    break;
+                case "newest":
+                    sort = Sort.by(Sort.Direction.DESC, "id");
+                    break;
+            }
+        }
+
+        return productRepository.findAll(spec, sort).stream()
                 .map(ProductResponse::fromEntity)
                 .collect(Collectors.toList());
     }

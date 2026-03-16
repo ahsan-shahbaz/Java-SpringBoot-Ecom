@@ -21,8 +21,9 @@ public class ProductController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) Double rating,
-            @RequestParam(required = false) Boolean inStock) {
-        return ResponseEntity.ok(productService.getAllProducts(priceMin, priceMax, category, brand, rating, inStock));
+            @RequestParam(required = false) Boolean inStock,
+            @RequestParam(required = false) String sortBy) {
+        return ResponseEntity.ok(productService.getAllProducts(priceMin, priceMax, category, brand, rating, inStock, sortBy));
     }
 
     @GetMapping("/{id}")
