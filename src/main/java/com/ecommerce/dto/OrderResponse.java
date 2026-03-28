@@ -20,6 +20,8 @@ public class OrderResponse {
     private Double total;
     private String status;
     private LocalDateTime date;
+    private String customerEmail;
+    private String customerName;
 
     @Getter @Setter
     @NoArgsConstructor @AllArgsConstructor
@@ -48,6 +50,8 @@ public class OrderResponse {
                 .total(order.getTotal())
                 .status(order.getStatus().name())
                 .date(order.getCreatedAt())
+                .customerEmail(order.getUser().getEmail())
+                .customerName(order.getFirstName() + " " + order.getLastName())
                 .build();
     }
 }

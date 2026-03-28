@@ -1,6 +1,7 @@
 package com.ecommerce.service;
 
 import com.ecommerce.dto.ProductResponse;
+import com.ecommerce.dto.ProductRequest;
 import com.ecommerce.entity.Product;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.ProductRepository;
@@ -91,5 +92,55 @@ public class ProductService {
         return productRepository.findByCategory(category).stream()
                 .map(ProductResponse::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public ProductResponse createProduct(ProductRequest request) {
+        Product product = Product.builder()
+                .title(request.getTitle())
+                .price(request.getPrice())
+                .originalPrice(request.getOriginalPrice())
+                .discountPercentage(request.getDiscountPercentage())
+                .description(request.getDescription())
+                .category(request.getCategory())
+                .brand(request.getBrand())
+                .image(request.getImage())
+                .images(request.getImages())
+                .features(request.getFeatures())
+                .stock(request.getStock())
+                .tags(request.getTags())
+                .variants(request.getVariants())
+                .ratingRate(0.0)
+                .ratingCount(0)
+                .build();
+
+        return ProductResponse.fromEntity(productRepository.save(product));
+    }
+
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        product.setTitle(request.getTitle());
+        product.setPrice(request.getPrice());
+        product.setOriginalPrice(request.getOriginalPrice());
+        product.setDiscountPercentage(request.getDiscountPercentage());
+        product.setDescription(request.getDescription());
+        product.setCategory(request.getCategory());
+        product.setBrand(request.getBrand());
+        product.setImage(request.getImage());
+        product.setImages(request.getImages());
+        product.setFeatures(request.getFeatures());
+        product.setStock(request.getStock());
+        product.setTags(request.getTags());
+        product.setVariants(request.getVariants());
+
+        return ProductResponse.fromEntity(productRepository.save(product));
+    }
+
+    public void deleteProduct(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }
+        productRepository.deleteById(id);
     }
 }
