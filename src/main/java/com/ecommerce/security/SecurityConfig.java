@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/ai/**")).permitAll()
                         // Protected endpoints
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/cart/**").authenticated()

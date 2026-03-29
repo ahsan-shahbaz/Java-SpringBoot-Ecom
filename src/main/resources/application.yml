@@ -22,6 +22,12 @@ spring:
       hibernate:
         format_sql: true
 
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llama3
+
 app:
   jwt:
     secret: YTJiM2M0ZDVlNmY3ZzhoOWkwajFrMmwzbTRuNW82cDdxOHI5czB0MXUydg==
