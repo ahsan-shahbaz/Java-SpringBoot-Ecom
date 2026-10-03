@@ -34,3 +34,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+        env:
+          # Throwaway CI-only values so the Spring context can start; not real credentials.
+          JWT_SECRET: ci-only-jwt-secret-ci-only-jwt-secret-0123456789
+          DB_PASSWORD: ci-only
