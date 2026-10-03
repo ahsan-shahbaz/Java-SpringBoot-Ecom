@@ -10,8 +10,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=EcommerceDB;encrypt=true;trustServerCertificate=true;
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: sa
-    password: 123
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD}
 
   jpa:
     database-platform: org.hibernate.dialect.SQLServerDialect
@@ -24,7 +24,7 @@ spring:
 
 app:
   jwt:
-    secret: YTJiM2M0ZDVlNmY3ZzhoOWkwajFrMmwzbTRuNW82cDdxOHI5czB0MXUydg==
+    secret: ${JWT_SECRET}
     expiration-ms: 86400000  # 24 hours
   cors:
     allowed-origins: http://localhost:4200,http://localhost:4201
